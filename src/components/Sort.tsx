@@ -1,30 +1,46 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, FC } from "react";
 import { useDispatch, useSelector } from "react-redux/es/exports";
-import { setSort } from "../redux/slices/filterSlice";
+import {
+  selectSort,
+  setSort,
+  SortPropertyEmum,
+  TSort,
+} from "../redux/slices/filterSlice";
 
-export const sortList = [
-  { name: "популярности DESC", sortProperty: "rating" },
-  { name: "популярности ASC", sortProperty: "-rating" },
-  { name: "цене DESC", sortProperty: "price" },
-  { name: "цене ASC", sortProperty: "-price" },
-  { name: "алфавиту DESC", sortProperty: "title" },
-  { name: "алфавиту ASC", sortProperty: "-title" },
+type TSortItem = {
+  name: string;
+  sortProperty: SortPropertyEmum;
+};
+
+type TPopupClick = MouseEvent & {
+  path: Node[];
+};
+
+export const sortList: TSortItem[] = [
+  { name: "популярности DESC", sortProperty: SortPropertyEmum.RATING_DESC },
+  { name: "популярности ASC", sortProperty: SortPropertyEmum.RATING_ASC },
+  { name: "цене DESC", sortProperty: SortPropertyEmum.PRICE_DESC },
+  { name: "цене ASC", sortProperty: SortPropertyEmum.PRICE_ASC },
+  { name: "алфавиту DESC", sortProperty: SortPropertyEmum.TITLE_DESC },
+  { name: "алфавиту ASC", sortProperty: SortPropertyEmum.TITLE_ASC },
 ];
 
-const Sort = () => {
+const Sort: FC = () => {
   const dispatch = useDispatch();
-  const sort = useSelector((state) => state.filter.sort);
-  const sortRef = useRef();
+  const sort = useSelector(selectSort);
+  const sortRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
 
-  const onClickListItem = (obj) => {
+  const onClickListItem = (obj: TSortItem) => {
     dispatch(setSort(obj));
     setOpen(false);
   };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.path.includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const _event = event as TPopupClick;
+
+      if (sortRef.current && !_event.path.includes(sortRef.current)) {
         setOpen(false);
       }
     };
