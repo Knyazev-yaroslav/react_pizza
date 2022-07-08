@@ -9,7 +9,7 @@ import style from "./Search.module.scss";
 import search_svg from "../../assets/img/search.svg";
 import debounce from "lodash.debounce";
 import { useDispatch } from "react-redux/es/exports";
-import { setSearchValue } from "../../redux/slices/filterSlice";
+import { setSearchValue } from "../../redux/filter/slice";
 
 const Search = () => {
   const dispatch = useDispatch();
