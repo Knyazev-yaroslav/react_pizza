@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useRef, useState } from "react";
 import style from "./Search.module.scss";
 import search_svg from "../../assets/img/search.svg";
 import debounce from "lodash.debounce";
